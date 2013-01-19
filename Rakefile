@@ -15,6 +15,18 @@ require 'jekyll/core_ext'
 
 def read_config(path)
   YAML.load(File.load(File.join(File.dirname(__FILE__), '_config', path)))
+  full_path = File.join(File.dirname(__FILE__), '_config', path)
+  if File.exists? full_path
+    begin
+      configs = YAML.load(File.open(full_path))
+        configs
+      end
+      puts "Error reading configuration file '#{full_path}':"
+      exit(-1)
+    end
+  else
+    raise ArgumentError, "File at '#{full_path}' does not exist."
+  end
 end
 
 def write_config(path, obj)
