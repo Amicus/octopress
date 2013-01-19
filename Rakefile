@@ -9,9 +9,12 @@ require 'jekyll/core_ext'
 def read_configuration
   configs = {}
   Dir.glob(File.join(Dir.pwd, '_config', '**', '*.yml')) do |filename|
-    configs.deep_merge(YAML.load(File.open(filename)))
+    file_yaml = YAML.load(File.read(filename))
+    unless file_yaml.nil?
+      configs = file_yaml.merge(configs)
+    end
   end
-  configs
+  configs.inject({}) { |memo,(k,v)| memo[k.to_sym] = v; memo }
 end
 
 configuration = read_configuration

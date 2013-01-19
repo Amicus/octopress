@@ -13,4 +13,4 @@ rsync_args:    ""  # Any extra arguments to pass to rsync
 deploy_dir:    "_deploy"
 
 # Hidden "dot" files that should be included with the deployed site (see task copydot)
-copy_dot_files = []
+copy_dot_files: []
