@@ -32,7 +32,7 @@ task :install, :theme do |t, args|
   mkdir_p "sass"
   cp_r "#{configuration[:themes_dir]}/#{theme}/sass/.", "sass"
   mkdir_p "#{configuration[:source]}/#{configuration[:posts_dir]}"
-  mkdir_p configuration[:public_dir]
+  mkdir_p configuration[:destination]
 end
 
 #######################
@@ -284,7 +284,7 @@ task :rsync do
     exclude = "--exclude-from '#{File.expand_path('./rsync-exclude')}'"
   end
   puts "## Deploying website via Rsync"
-  ok_failed system("rsync -avze 'ssh -p #{configuration[:ssh_port]}' #{exclude} #{configuration[:rsync_args]} #{"--delete" unless configuration[:rsync_delete] == false} #{configuration[:public_dir]}/ #{configuration[:ssh_user]}:#{configuration[:document_root]}")
+  ok_failed system("rsync -avze 'ssh -p #{configuration[:ssh_port]}' #{exclude} #{configuration[:rsync_args]} #{"--delete" unless configuration[:rsync_delete] == false} #{configuration[:destination]}/ #{configuration[:ssh_user]}:#{configuration[:document_root]}")
 end
 
 desc "deploy public directory to github pages"
@@ -296,8 +296,8 @@ multitask :push do
     cd "#{configuration[:deploy_dir]}" do
       system "git pull origin #{deploy_branch}"
     end
-    puts "\n## copying #{configuration[:public_dir]} to #{configuration[:deploy_dir]}"
-    cp_r "#{configuration[:public_dir]}/.", configuration[:deploy_dir]
+    puts "\n## copying #{configuration[:destination]} to #{configuration[:deploy_dir]}"
+    cp_r "#{configuration[:destination]}/.", configuration[:deploy_dir]
     cd "#{configuration[:deploy_dir]}" do
       File.new(".nojekyll", "w").close
       system "git add ."
@@ -340,7 +340,7 @@ task :set_root_dir, :dir do |t, args|
       dir = "/" + args.dir.sub(/(\/*)(.+)/, "\\2").sub(/\/$/, '');
     end
     rakefile = IO.read(__FILE__)
-    rakefile.sub!(/configuration[:public_dir](\s*)=(\s*)(["'])[\w\-\/]*["']/, "configuration[:public_dir]\\1=\\2\\3public#{dir}\\3")
+    rakefile.sub!(/configuration[:destination](\s*)=(\s*)(["'])[\w\-\/]*["']/, "configuration[:destination]\\1=\\2\\3public#{dir}\\3")
     File.open(__FILE__, 'w') do |f|
       f.write rakefile
     end
@@ -359,8 +359,8 @@ task :set_root_dir, :dir do |t, args|
     File.open('_config.yml', 'w') do |f|
       f.write jekyll_config
     end
-    rm_rf configuration[:public_dir]
-    mkdir_p "#{configuration[:public_dir]}#{dir}"
+    rm_rf configuration[:destination]
+    mkdir_p "#{configuration[:destination]}#{dir}"
     puts "\n========================================================"
     puts "Site's root directory is now '/#{dir.sub(/^\//, '')}'"
     puts "Don't forget to update your url in _config.yml"
@@ -398,7 +398,7 @@ task :setup_github_pages, :repo do |t, args|
       system "git branch -m master source"
       puts "Master branch renamed to 'source' for committing your blog source files"
     else
-      unless !configuration[:public_dir].match("#{project}").nil?
+      unless !configuration[:destination].match("#{project}").nil?
         Rake::Task[:set_root_dir].invoke(project)
       end
     end
