@@ -13,6 +13,46 @@ require 'jekyll/core_ext'
 ###   it does. Please do not change anything below if you want help --
 ###   otherwise, you're on your own ;-)
 
+def read_config(path)
+  YAML.load(File.load(File.join(File.dirname(__FILE__), '_config', path)))
+end
+
+def write_config(path, obj)
+  YAML.dump(obj, File.open(File.join(File.dirname(__FILE__), '_config', path), 'w'))
+end
+
+def write_configs_for_generation
+  config = read_configuration
+  File.open("_config.yml", "w") do |f|
+    f.write(config.to_yaml)
+  end
+  File.open("config.rb", "w") do |f|
+    f.puts("project_type = :stand_alone")
+    f.puts
+    compass_http_path = config[:destination].gsub('public', '')
+    f.puts("http_path = '#{compass_http_path}'")
+    f.puts("http_images_path = '#{compass_http_path}/images'")
+    f.puts("http_generated_images_path = '#{compass_http_path}/images'")
+    f.puts("http_fonts_path = '#{compass_http_path}/fonts'")
+    f.puts("css_dir = '#{config[:destination]}/stylesheets'")
+    f.puts
+    f.puts("sass_dir = 'sass'")
+    f.puts("images_dir = '#{config[:source]}/images'")
+    f.puts("fonts_dir = '#{config[:source]}/fonts'")
+    f.puts("generated_images_dir = '#{config[:source]}/images'")
+    f.puts
+    f.puts("line_comments = false")
+    f.puts("output_style = :compressed")
+  end
+  File.open("config.ru", "w") do |f|
+    
+  end
+end
+
+def remove_configs_for_generation
+  File.unlink("config.rb", "config.ru", "_config.yml")
+end
+
 def read_configuration
   configs = {}
   Dir.glob(File.join(Dir.pwd, '_config', '**', '*.yml')) do |filename|
