@@ -294,7 +294,7 @@ multitask :push do
     (Dir["#{configuration[:deploy_dir]}/*"]).each { |f| rm_rf(f) }
     puts "Attempting pull, to sync local deployment repository"
     cd "#{configuration[:deploy_dir]}" do
-      system "git pull origin #{deploy_branch}"
+      system "git pull origin #{configuration[:deploy_branch]}"
     end
     puts "\n## copying #{configuration[:destination]} to #{configuration[:deploy_dir]}"
     cp_r "#{configuration[:destination]}/.", configuration[:deploy_dir]
@@ -306,7 +306,7 @@ multitask :push do
       puts "\n## Commiting: #{message}"
       system "git commit -m \"#{message}\""
       puts "\n## Pushing generated #{configuration[:deploy_dir]} website"
-      if system "git push origin #{deploy_branch}"
+      if system "git push origin #{configuration[:deploy_branch]}"
         puts "\n## GitHub Pages deploy complete"
       else
         remote = `git remote -v`
@@ -422,7 +422,7 @@ task :setup_github_pages, :repo do |t, args|
 
   # Configure deployment setup in Rakefile
   rakefile = IO.read(__FILE__)
-  rakefile.sub!(/deploy_branch(\s*)=(\s*)(["'])[\w-]*["']/, "deploy_branch\\1=\\2\\3#{branch}\\3")
+  rakefile.sub!(/configuration[:deploy_branch](\s*)=(\s*)(["'])[\w-]*["']/, "configuration[:deploy_branch]\\1=\\2\\3#{branch}\\3")
   rakefile.sub!(/configuration[:deploy_default](\s*)=(\s*)(["'])[\w-]*["']/, "configuration[:deploy_default]\\1=\\2\\3push\\3")
   File.open(__FILE__, 'w') do |f|
     f.write rakefile
