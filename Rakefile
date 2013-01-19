@@ -21,17 +21,17 @@ configuration = read_configuration
 
 desc "Initial setup for Octopress: copies the default theme into the path of Jekyll's generator. Rake install defaults to rake install[classic] to install a different theme run rake install[some_theme_name]"
 task :install, :theme do |t, args|
-  if File.directory?(configuration[:source_dir]) || File.directory?("sass")
+  if File.directory?(configuration[:source]) || File.directory?("sass")
     abort("rake aborted!") if ask("A theme is already installed, proceeding will overwrite existing files. Are you sure?", ['y', 'n']) == 'n'
   end
   # copy theme into working Jekyll directories
   theme = args.theme || 'classic'
-  puts "## Copying "+theme+" theme into ./#{configuration[:configuration[:source_dir]]} and ./sass"
-  mkdir_p configuration[:source_dir]
-  cp_r "#{configuration[:themes_dir]}/#{theme}/source/.", configuration[:source_dir]
+  puts "## Copying "+theme+" theme into ./#{configuration[:source]} and ./sass"
+  mkdir_p configuration[:source]
+  cp_r "#{configuration[:themes_dir]}/#{theme}/source/.", configuration[:source]
   mkdir_p "sass"
   cp_r "#{configuration[:themes_dir]}/#{theme}/sass/.", "sass"
-  mkdir_p "#{configuration[:source_dir]}/#{configuration[:configuration[:new_post_ext]]}"
+  mkdir_p "#{configuration[:source]}/#{configuration[:posts_dir]}"
   mkdir_p configuration[:public_dir]
 end
 
@@ -42,19 +42,19 @@ end
 desc "Generate jekyll site"
 task :generate, :no_future do |t, args|
   future = args.no_future
-  raise "### You haven't set anything up yet. First run `rake install` to set up an Octopress theme." unless File.directory?(configuration[:source_dir])
+  raise "### You haven't set anything up yet. First run `rake install` to set up an Octopress theme." unless File.directory?(configuration[:source])
   puts "## Generating Site with Jekyll"
-  system "compass compile --css-dir #{configuration[:source_dir]}/stylesheets"
+  system "compass compile --css-dir #{configuration[:source]}/stylesheets"
   Rake::Task['minify_and_combine'].execute
   system "jekyll --no-server --no-auto #{'--no-future' if future.nil?}"
-  unpublished = get_unpublished(Dir.glob("#{configuration[:source_dir]}/#{configuration[:configuration[:new_post_ext]]}/*.*"), {no_future: future.nil?, message: "\nThese posts were not generated:"})
+  unpublished = get_unpublished(Dir.glob("#{configuration[:source]}/#{configuration[:posts_dir]}/*.*"), {no_future: future.nil?, message: "\nThese posts were not generated:"})
   puts unpublished unless unpublished.empty?
 end
 
 Rake::Minify.new(:minify_and_combine) do
-  files = FileList.new("#{configuration[:source_dir]}/javascripts/group/*.*")
+  files = FileList.new("#{configuration[:source]}/javascripts/group/*.*")
 
-  output_file =  "#{configuration[:source_dir]}/javascripts/octopress.min.js"
+  output_file =  "#{configuration[:source]}/javascripts/octopress.min.js"
 
   puts "BEGIN Minifying #{output_file}"
   group(output_file) do
@@ -88,9 +88,9 @@ end
 desc "Watch the site and regenerate when it changes"
 task :watch, :show_future do |t, args|
   future = args.show_future
-  raise "### You haven't set anything up yet. First run `rake install` to set up an Octopress theme." unless File.directory?(configuration[:source_dir])
+  raise "### You haven't set anything up yet. First run `rake install` to set up an Octopress theme." unless File.directory?(configuration[:source])
   puts "Starting to watch source with Jekyll and Compass."
-  system "compass compile --css-dir #{configuration[:source_dir]}/stylesheets"
+  system "compass compile --css-dir #{configuration[:source]}/stylesheets"
   Rake::Task['minify_and_combine'].execute
   jekyllPid = Process.spawn("jekyll --auto #{'--no-future' if future.nil?}")
   compassPid = Process.spawn("compass watch")
@@ -104,9 +104,9 @@ end
 desc "preview the site in a web browser."
 task :preview, :show_future do |t, args|
   future = args.show_future
-  raise "### You haven't set anything up yet. First run `rake install` to set up an Octopress theme." unless File.directory?(configuration[:source_dir])
+  raise "### You haven't set anything up yet. First run `rake install` to set up an Octopress theme." unless File.directory?(configuration[:source])
   puts "Starting to watch source with Jekyll and Compass. Starting Rack, serving to http://#{configuration[:server_host]}:#{configuration[:server_port]}"
-  system "compass compile --css-dir #{configuration[:source_dir]}/stylesheets"
+  system "compass compile --css-dir #{configuration[:source]}/stylesheets"
   jekyllPid = Process.spawn("jekyll --auto #{'--no-future' if future.nil?}")
   compassPid = Process.spawn("compass watch")
   rackupPid = Process.spawn("rackup --host #{configuration[:server_host]} --port #{configuration[:server_port]}")
@@ -120,16 +120,16 @@ task :preview, :show_future do |t, args|
 end
 
 # usage rake new_post[my-new-post] or rake new_post['my new post'] or rake new_post (defaults to "new-post")
-desc "Begin a new post in #{configuration[:source_dir]}/#{configuration[:configuration[:new_post_ext]]}"
+desc "Begin a new post in #{configuration[:source]}/#{configuration[:posts_dir]}"
 task :new_post, :title do |t, args|
   if args.title
     title = args.title
   else
     title = get_stdin("Enter a title for your post: ")
   end
-  raise "### You haven't set anything up yet. First run `rake install` to set up an Octopress theme." unless File.directory?(configuration[:source_dir])
-  mkdir_p "#{configuration[:source_dir]}/#{configuration[:configuration[:new_post_ext]]}"
-  filename = "#{configuration[:source_dir]}/#{configuration[:configuration[:new_post_ext]]}/#{Time.now.strftime('%Y-%m-%d')}-#{title.to_url}.#{new_post_ext}"
+  raise "### You haven't set anything up yet. First run `rake install` to set up an Octopress theme." unless File.directory?(configuration[:source])
+  mkdir_p "#{configuration[:source]}/#{configuration[:posts_dir]}"
+  filename = "#{configuration[:source]}/#{configuration[:posts_dir]}/#{Time.now.strftime('%Y-%m-%d')}-#{title.to_url}.#{configuration[:new_post_ext]}"
   if File.exist?(filename)
     abort("rake aborted!") if ask("#{filename} already exists. Do you want to overwrite?", ['y', 'n']) == 'n'
   end
@@ -147,11 +147,11 @@ task :new_post, :title do |t, args|
 end
 
 # usage rake new_page[my-new-page] or rake new_page[my-new-page.html] or rake new_page (defaults to "new-page.markdown")
-desc "Create a new page in #{configuration[:source_dir]}/(filename)/index.#{configuration[:new_page_ext]}"
+desc "Create a new page in #{configuration[:source]}/(filename)/index.#{configuration[:new_page_ext]}"
 task :new_page, :filename do |t, args|
-  raise "### You haven't set anything up yet. First run `rake install` to set up an Octopress theme." unless File.directory?(configuration[:source_dir])
+  raise "### You haven't set anything up yet. First run `rake install` to set up an Octopress theme." unless File.directory?(configuration[:source])
   args.with_defaults(:filename => 'new-page')
-  page_dir = [configuration[:source_dir]]
+  page_dir = [configuration[:source]]
   if args.filename.downcase =~ /(^.+\/)?(.+)/
     filename, dot, extension = $2.rpartition('.').reject(&:empty?)         # Get filename and extension
     title = filename
@@ -193,22 +193,22 @@ task :isolate, :filename do |t, args|
   else
     filename = get_stdin("Enter a post file name: ")
   end
-  full_configuration[:stash_dir] = "#{configuration[:source_dir]}/#{configuration[:stash_dir]}"
+  full_configuration[:stash_dir] = "#{configuration[:source]}/#{configuration[:stash_dir]}"
   FileUtils.mkdir(full_configuration[:stash_dir]) unless File.exist?(full_configuration[:stash_dir])
-  Dir.glob("#{configuration[:source_dir]}/#{configuration[:configuration[:new_post_ext]]}/*.*") do |post|
+  Dir.glob("#{configuration[:source]}/#{configuration[:posts_dir]}/*.*") do |post|
     FileUtils.mv post, full_configuration[:stash_dir] unless post.include?(filename)
   end
 end
 
 desc "Move all stashed posts back into the posts directory, ready for site generation."
 task :integrate do
-  FileUtils.mv Dir.glob("#{configuration[:source_dir]}/#{configuration[:stash_dir]}/*.*"), "#{configuration[:source_dir]}/#{configuration[:configuration[:new_post_ext]]}/"
+  FileUtils.mv Dir.glob("#{configuration[:source]}/#{configuration[:stash_dir]}/*.*"), "#{configuration[:source]}/#{configuration[:posts_dir]}/"
 end
 
 desc "Clean out caches: .pygments-cache, .gist-cache, .sass-cache"
 task :clean do
   [".pygments-cache/**", ".gist-cache/**"].each { |dir| rm_rf Dir.glob(dir) }
-  rm "#{configuration[:source_dir]}/stylesheets/screen.css" if File.exists?("#{configuration[:source_dir]}/stylesheets/screen.css")
+  rm "#{configuration[:source]}/stylesheets/screen.css" if File.exists?("#{configuration[:source]}/stylesheets/screen.css")
   system "compass clean"
   puts "## Cleaned Sass, Pygments and Gist caches, removed generated stylesheets ##"
 end
@@ -238,29 +238,29 @@ end
 desc "Move source to source.old, install source theme updates, replace source/_includes/navigation.html with source.old's navigation"
 task :update_source, :theme do |t, args|
   theme = args.theme || 'classic'
-  if File.directory?("#{configuration[:source_dir]}.old")
-    puts "## Removed existing #{configuration[:source_dir]}.old directory"
-    rm_r "#{configuration[:source_dir]}.old", :secure=>true
+  if File.directory?("#{configuration[:source]}.old")
+    puts "## Removed existing #{configuration[:source]}.old directory"
+    rm_r "#{configuration[:source]}.old", :secure=>true
   end
-  mkdir "#{configuration[:source_dir]}.old"
-  cp_r "#{configuration[:source_dir]}/.", "#{configuration[:source_dir]}.old"
-  puts "## Copied #{configuration[:source_dir]} into #{configuration[:source_dir]}.old/"
-  cp_r "#{configuration[:themes_dir]}/"+theme+"/source/.", configuration[:source_dir], :remove_destination=>true
-  cp_r "#{configuration[:source_dir]}.old/_includes/custom/.", "#{configuration[:source_dir]}/_includes/custom/", :remove_destination=>true
-  mv "#{configuration[:source_dir]}/index.html", "#{configuration[:blog_index_dir]}", :force=>true if configuration[:blog_index_dir] != configuration[:source_dir]
-  cp "#{configuration[:source_dir]}.old/index.html", configuration[:source_dir] if configuration[:blog_index_dir] != configuration[:source_dir] && File.exists?("#{configuration[:source_dir]}.old/index.html")
-  if File.exists?("#{configuration[:source_dir]}/blog/archives/index.html")
+  mkdir "#{configuration[:source]}.old"
+  cp_r "#{configuration[:source]}/.", "#{configuration[:source]}.old"
+  puts "## Copied #{configuration[:source]} into #{configuration[:source]}.old/"
+  cp_r "#{configuration[:themes_dir]}/"+theme+"/source/.", configuration[:source], :remove_destination=>true
+  cp_r "#{configuration[:source]}.old/_includes/custom/.", "#{configuration[:source]}/_includes/custom/", :remove_destination=>true
+  mv "#{configuration[:source]}/index.html", "#{configuration[:blog_index_dir]}", :force=>true if configuration[:blog_index_dir] != configuration[:source]
+  cp "#{configuration[:source]}.old/index.html", configuration[:source] if configuration[:blog_index_dir] != configuration[:source] && File.exists?("#{configuration[:source]}.old/index.html")
+  if File.exists?("#{configuration[:source]}/blog/archives/index.html")
     puts "## Moving blog/archives to /archives (standard location as of 2.1) ##"
-    file = "#{configuration[:source_dir]}/_includes/custom/navigation.html"
+    file = "#{configuration[:source]}/_includes/custom/navigation.html"
     navigation = IO.read(file)
     navigation = navigation.gsub(/(.*)\/blog(\/archives)(.*$)/m, '\1\2\3')
     File.open(file, 'w') do |f|
       f.write navigation
     end
-    rm_r "#{configuration[:source_dir]}/blog/archives"
-    rm_r "#{configuration[:source_dir]}/blog" if Dir.entries("#{configuration[:source_dir]}/blog").join == "..."
+    rm_r "#{configuration[:source]}/blog/archives"
+    rm_r "#{configuration[:source]}/blog" if Dir.entries("#{configuration[:source]}/blog").join == "..."
   end
-  puts "## Updated #{configuration[:source_dir]} ##"
+  puts "## Updated #{configuration[:source]} ##"
 end
 
 
@@ -284,7 +284,7 @@ task :rsync do
     exclude = "--exclude-from '#{File.expand_path('./rsync-exclude')}'"
   end
   puts "## Deploying website via Rsync"
-  ok_failed system("rsync -avze 'ssh -p #{ssh_port}' #{exclude} #{rsync_args} #{"--delete" unless rsync_delete == false} #{configuration[:public_dir]}/ #{ssh_user}:#{document_root}")
+  ok_failed system("rsync -avze 'ssh -p #{configuration[:ssh_port]}' #{exclude} #{configuration[:rsync_args]} #{"--delete" unless configuration[:rsync_delete] == false} #{configuration[:public_dir]}/ #{configuration[:ssh_user]}:#{configuration[:document_root]}")
 end
 
 desc "deploy public directory to github pages"
@@ -431,7 +431,7 @@ task :setup_github_pages, :repo do |t, args|
   # Configure published url 
   jekyll_config = IO.read('_config.yml')
   current_url = /^url:\s?(.*$)/.match(jekyll_config)[1]
-  has_cname = File.exists?("#{configuration[:source_dir]}/CNAME")
+  has_cname = File.exists?("#{configuration[:source]}/CNAME")
   if current_url == 'http://yoursite.com'
     jekyll_config.sub!(/^url:.*$/, "url: #{url}") 
     File.open('_config.yml', 'w') do |f|
@@ -442,7 +442,7 @@ task :setup_github_pages, :repo do |t, args|
 
   puts "\n========================================================"
   if has_cname
-    cname = IO.read("#{configuration[:source_dir]}/CNAME").chomp
+    cname = IO.read("#{configuration[:source]}/CNAME").chomp
     current_short_url = /\/{2}(.*$)/.match(current_url)[1]
     if cname != current_short_url
       puts "!! WARNING: Your CNAME points to #{cname} but your _config.yml url is set to #{current_short_url} !!"
@@ -452,7 +452,7 @@ task :setup_github_pages, :repo do |t, args|
     end
   else
     puts "GitHub Pages will host your site at #{url}."
-    puts "To host at \"your-site.com\", configure a CNAME: `echo \"your-domain.com\" > #{configuration[:source_dir]}/CNAME`"
+    puts "To host at \"your-site.com\", configure a CNAME: `echo \"your-domain.com\" > #{configuration[:source]}/CNAME`"
     puts "Then change the url in _config.yml from #{current_url} to http://your-domain.com"
     puts "Finally, follow the guide at http://help.github.com/pages/#custom_domains for help pointing your domain to GitHub Pages"
   end
@@ -465,7 +465,7 @@ end
 # usage rake list_posts or rake list_posts[pub|unpub]
 desc "List all unpublished/draft posts"
 task :list_drafts do
-  posts = Dir.glob("#{configuration[:source_dir]}/#{configuration[:configuration[:new_post_ext]]}/*.*") 
+  posts = Dir.glob("#{configuration[:source]}/#{configuration[:posts_dir]}/*.*") 
   unpublished = get_unpublished(posts)
   puts unpublished.empty? ? "There are no unpublished posts" : unpublished
 end
