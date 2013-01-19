@@ -44,9 +44,6 @@ def write_configs_for_generation
     f.puts("line_comments = false")
     f.puts("output_style = :compressed")
   end
-  File.open("config.ru", "w") do |f|
-    
-  end
 end
 
 def remove_configs_for_generation
