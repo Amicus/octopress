@@ -18,9 +18,14 @@ def read_config(path)
   if File.exists? full_path
     begin
       configs = YAML.load(File.open(full_path))
+      if configs.nil?
         configs
+      else
+        configs.inject({}) { |memo,(k,v)| memo[k.to_sym] = v; memo }
       end
+    rescue => e
       puts "Error reading configuration file '#{full_path}':"
+      puts e.message, e.backtrace
       exit(-1)
     end
   else
