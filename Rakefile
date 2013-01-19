@@ -64,7 +64,7 @@ def write_configs_for_generation
 end
 
 def remove_configs_for_generation
-  File.unlink("config.rb", "config.ru", "_config.yml")
+  File.unlink("config.rb", "_config.yml")
 end
 
 def read_configuration
