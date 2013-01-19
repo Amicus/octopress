@@ -14,7 +14,6 @@ require 'jekyll/core_ext'
 ###   otherwise, you're on your own ;-)
 
 def read_config(path)
-  YAML.load(File.load(File.join(File.dirname(__FILE__), '_config', path)))
   full_path = File.join(File.dirname(__FILE__), '_config', path)
   if File.exists? full_path
     begin
