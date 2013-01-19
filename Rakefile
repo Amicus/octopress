@@ -467,28 +467,21 @@ task :setup_github_pages, :repo do |t, args|
       system "git branch -m gh-pages" unless branch == 'master'
     end
   end
+  # Configure deployment setup in deploy.yml
+  deploy_configuration = read_config('deploy.yml')
+  deploy_configuration[:deploy_default] = "push"
+  deploy_configuration[:deploy_branch]  = branch
+  deploy_configuration = read_config('defaults/deploy/gh_pages.yml').deep_merge(deploy_configuration)
+  puts deploy_configuration
+  write_config('deploy.yml', deploy_configuration)
 
-  # Configure deployment setup in Rakefile
-  rakefile = IO.read(__FILE__)
-  rakefile.sub!(/configuration[:deploy_branch](\s*)=(\s*)(["'])[\w-]*["']/, "configuration[:deploy_branch]\\1=\\2\\3#{branch}\\3")
-  rakefile.sub!(/configuration[:deploy_default](\s*)=(\s*)(["'])[\w-]*["']/, "configuration[:deploy_default]\\1=\\2\\3push\\3")
-  File.open(__FILE__, 'w') do |f|
-    f.write rakefile
-  end
-
-  # Configure published url 
-  jekyll_config = IO.read('_config.yml')
-  current_url = /^url:\s?(.*$)/.match(jekyll_config)[1]
-  has_cname = File.exists?("#{configuration[:source]}/CNAME")
-  if current_url == 'http://yoursite.com'
-    jekyll_config.sub!(/^url:.*$/, "url: #{url}") 
-    File.open('_config.yml', 'w') do |f|
-      f.write jekyll_config
-    end
-    current_url = url
-  end
+  # Configure published url
+  site_configuration = read_config('site.yml')
+  site_configuration[:url] = url if site_configuration.has_key?(:url) && site_configuration[:url] == 'http://yoursite.com'
+  site_configuration = read_config('defaults/jekyll.yml').deep_merge(site_configuration)
 
   puts "\n========================================================"
+  has_cname = File.exists?("#{configuration[:source]}/CNAME")
   if has_cname
     cname = IO.read("#{configuration[:source]}/CNAME").chomp
     current_short_url = /\/{2}(.*$)/.match(current_url)[1]
