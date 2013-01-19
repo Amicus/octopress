@@ -104,12 +104,14 @@ desc "Generate jekyll site"
 task :generate, :no_future do |t, args|
   future = args.no_future
   raise "### You haven't set anything up yet. First run `rake install` to set up an Octopress theme." unless File.directory?(configuration[:source])
+  write_configs_for_generation
   puts "## Generating Site with Jekyll"
   system "compass compile --css-dir #{configuration[:source]}/stylesheets"
   Rake::Task['minify_and_combine'].execute
   system "jekyll --no-server --no-auto #{'--no-future' if future.nil?}"
   unpublished = get_unpublished(Dir.glob("#{configuration[:source]}/#{configuration[:posts_dir]}/*.*"), {no_future: future.nil?, message: "\nThese posts were not generated:"})
   puts unpublished unless unpublished.empty?
+  remove_configs_for_generation
 end
 
 Rake::Minify.new(:minify_and_combine) do
@@ -150,6 +152,7 @@ desc "Watch the site and regenerate when it changes"
 task :watch, :show_future do |t, args|
   future = args.show_future
   raise "### You haven't set anything up yet. First run `rake install` to set up an Octopress theme." unless File.directory?(configuration[:source])
+  write_configs_for_generation
   puts "Starting to watch source with Jekyll and Compass."
   system "compass compile --css-dir #{configuration[:source]}/stylesheets"
   Rake::Task['minify_and_combine'].execute
@@ -157,6 +160,7 @@ task :watch, :show_future do |t, args|
   compassPid = Process.spawn("compass watch")
   trap("INT") {
     [jekyllPid, compassPid].each { |pid| Process.kill(9, pid) rescue Errno::ESRCH }
+    remove_configs_for_generation
     exit 0
   }
   [jekyllPid, compassPid].each { |pid| Process.wait(pid) }
@@ -166,6 +170,7 @@ desc "preview the site in a web browser."
 task :preview, :show_future do |t, args|
   future = args.show_future
   raise "### You haven't set anything up yet. First run `rake install` to set up an Octopress theme." unless File.directory?(configuration[:source])
+  write_configs_for_generation
   puts "Starting to watch source with Jekyll and Compass. Starting Rack, serving to http://#{configuration[:server_host]}:#{configuration[:server_port]}"
   system "compass compile --css-dir #{configuration[:source]}/stylesheets"
   jekyllPid = Process.spawn("jekyll --auto #{'--no-future' if future.nil?}")
@@ -174,6 +179,7 @@ task :preview, :show_future do |t, args|
 
   trap("INT") {
     [jekyllPid, compassPid, rackupPid].each { |pid| Process.kill(9, pid) rescue Errno::ESRCH }
+    remove_configs_for_generation
     exit 0
   }
 
