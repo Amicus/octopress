@@ -6,6 +6,13 @@ require 'time'
 require 'yaml'
 require 'jekyll/core_ext'
 
+### PLEASE NOTE:
+###   All configuration changes you wish to make should be made to:
+###       site.yml, deploy.yml
+###   in _config/. This Rakefile uses those config settings to do what
+###   it does. Please do not change anything below if you want help --
+###   otherwise, you're on your own ;-)
+
 def read_configuration
   configs = {}
   Dir.glob(File.join(Dir.pwd, '_config', '**', '*.yml')) do |filename|
