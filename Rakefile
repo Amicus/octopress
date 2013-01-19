@@ -402,13 +402,13 @@ task :set_root_dir, :dir do |t, args|
     end
     # update personal configuration
     site_configs = read_config('site.yml')
-    site_configs["destination"] = "public#{dir}"
-    site_configs["subscribe_rss"] = "#{dir}/atom.xml"
-    site_configs["root"] = "/#{dir.sub(/^\//, '')}"
+    site_configs[:destination] = "public#{dir}"
+    site_configs[:subscribe_rss] = "#{dir}/atom.xml"
+    site_configs[:root] = "/#{dir.sub(/^\//, '')}"
     write_config('site.yml', site_configs)
     
     rm_rf configuration[:destination]
-    mkdir_p site_configs["destination"]
+    mkdir_p site_configs[:destination]
     puts "\n========================================================"
     puts "Site's root directory is now '/#{dir.sub(/^\//, '')}'"
     puts "Don't forget to update your url in _config.yml"
