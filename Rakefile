@@ -6,11 +6,12 @@ require 'time'
 require 'yaml'
 require 'jekyll/core_ext'
 
-### PLEASE NOTE:
-###   All configuration changes you wish to make should be made to:
+### Configuring Octopress:
+###   Under _config/ you will find:
 ###       site.yml, deploy.yml
-###   in _config/. This Rakefile uses those config settings to do what
-###   it does. Please do not change anything below if you want help --
+###   Here you can override Octopress's default configurations or add your own.
+###   This Rakefile uses those config settings to do what it does.
+###   Please do not change anything below if you want help --
 ###   otherwise, you're on your own ;-)
 
 def read_config(path)
