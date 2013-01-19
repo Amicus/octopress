@@ -34,6 +34,7 @@ def read_config(path)
 end
 
 def write_config(path, obj)
+  obj.inject({}) { |memo,(k,v)| memo[k.to_s] = v; memo }
   YAML.dump(obj, File.open(File.join(File.dirname(__FILE__), '_config', path), 'w'))
 end
 
