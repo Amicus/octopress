@@ -8,3 +8,60 @@
 
 @import "base/animate";
 @import "custom/custom";
+
+article {
+  margin-bottom: 60px;
+  border-bottom: 1px solid $strokeColor;
+
+  &.post {
+    padding-top: 0;
+  }
+
+  .title {
+    color: $mainColor;
+    text-align: center;
+    font-size: 40px !important;
+    line-height: 55px !important;
+  }
+
+  .author {
+    text-align: center;
+
+    .authorPic {
+      height: 100px;
+      width: 100px;
+      margin-bottom: 20px;
+    }
+  }
+
+  .meta {
+    text-align: center;
+    margin: 0 auto;
+  }
+
+  .entry-content {
+    margin-top: 30px;
+
+    h2 {
+      border-bottom: none;
+
+      &:before {
+        border-bottom: none;
+      }
+    }
+
+    p {
+      border-top: none;
+      line-height: 35px;
+      margin-bottom: 30px;
+    }
+  }
+}
+
+.post .meta .date::before, .post .meta .tags::before, .post .meta .comments::before {
+  content: none;
+}
+
+.post .meta .date, .post .meta .tags, .post .meta .comments {
+  padding-left: 0;
+}

@@ -7,11 +7,14 @@
 		{% endif %}
 			{% if site.titlecase %}{{ post.title | titlecase }}{% else %}{{ post.title }}{% endif %}</a>
 	</h2>
+	<div class="author">
+		{% include post/author.html %}
+		<div class="meta">
+	  		<div class="date">{% include post/date.html %}{{ time }}</div>
+	  		<div class="tags">{% include post/categories.html %}</div>
+		</div>
+	</div>
     <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: {% include post/date.html %}{{ time }}</div>
-      <div class="tags">Tags: {% include post/categories.html %}</div>
-    </div>
 		{{ content | excerpt }}
 		{% capture excerpted %}{{ content | has_excerpt }}{% endcapture %}
 		{% if excerpted == 'true' %}<a href="{{ root_url }}{{ post.url }}" class="more-link">{{ site.excerpt_link }}</a>{% endif %}

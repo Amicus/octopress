@@ -86,7 +86,7 @@
     @include square(35px, 35px);
     margin-top: 20px;
     margin-right: 9px;
-    background-color: #ddd;
+    background-color: #d3d8dd;
     text-align: center;
     line-height: 35px;
     @include transition(background-color 1s ease-in-out);
@@ -153,14 +153,12 @@ background: url('/images/search-dark.png') no-repeat 10px 6px;
 
 #dark #search input[type="text"] {
 
-    border: 2px solid #ccc;
+    border: 2px solid #d3d8dd;
     font: bold 12px 'Lato',Arial,Helvetica,Sans-serif;
     color: #888;
     width: 60px;
     padding: 6px 15px 6px 35px;
-    -webkit-border-radius: 20px;
-    -moz-border-radius: 20px;
-    border-radius: 20px;
+    @include border-radius(20px);
     -webkit-transition: all 0.4s ease 0s;
     -moz-transition: all 0.4s ease 0s;
     -o-transition: all 0.4s ease 0s;
@@ -170,14 +168,15 @@ background: url('/images/search-dark.png') no-repeat 10px 6px;
 #dark #search input[type="text"]:focus {
     width: 100px;
     outline:0;
-    border: 2px solid #888;
+    border: 2px solid #9ca1a6;
 }
 
 /* nav */
 #nav {
   text-align: center;
   position: relative;
-  margin: 10px auto;
+  margin: 0 auto 20px auto;
+  border-bottom: 1px solid #d3d8dd;
 }
 
 ul#nav li {
@@ -189,13 +188,13 @@ ul#nav li {
   a {
     display: inline-block;
     font-family: "Lato";
-    font-weight: 400;
+    font-weight: 300;
     width: 110px;
     height: 40px;
     text-align: center;
     padding-top: 20px;
     padding-bottom: 20px;
-    color: #222;
+    color: #999;
     text-decoration: none;
     font-size: 16px;
     font-style: normal;
@@ -203,7 +202,6 @@ ul#nav li {
     &:hover {
       color: #011d3d;
       font-style: normal;
-      font-weight: normal;
     }
   }
 }
