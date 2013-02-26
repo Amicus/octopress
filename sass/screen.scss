@@ -9,6 +9,10 @@
 @import "base/animate";
 @import "custom/custom";
 
+h1, h2, h3, h4, h5 {
+  font-weight: 300;
+}
+
 article {
   margin-bottom: 60px;
   border-bottom: 1px solid $strokeColor;
@@ -25,7 +29,9 @@ article {
   }
 
   .author {
-    text-align: center;
+    // text-align: center;
+    font-style: italic;
+
 
     .authorPic {
       height: 100px;
@@ -35,8 +41,9 @@ article {
   }
 
   .meta {
-    text-align: center;
-    margin: 0 auto;
+    // text-align: center;
+    // margin: 0 auto;
+    font-style: italic;
   }
 
   .entry-content {
@@ -53,6 +60,10 @@ article {
     p {
       border-top: none;
       line-height: 35px;
+      margin-bottom: 30px;
+    }
+
+    blockquote, figure.code {
       margin-bottom: 30px;
     }
   }

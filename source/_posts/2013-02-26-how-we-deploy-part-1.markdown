@@ -29,9 +29,11 @@ We, instead, use the AWS API to assign tags to the instances we spin up.  A scri
 
 Let’s spin up a server (on my local box).
 
-<code>
+```ruby
+ 
 bin/create_server -e staging -g staging -r webapps -n webapps00
-</code>
+ 
+```
 
 That will use Fog to go out to AWS and create a server in the staging security group (<code>-g</code>) and staging environment (<code>-e</code>, i’ll get to this in a sec).  Adds a Name tag (<code>-n</code>) of <code>webapps00</code> and a “roles” (<code>-r</code>) tag of “webapps.”
 
@@ -43,9 +45,11 @@ You can think of the environment tag as simulated multicast... when a webapps bo
 
 The user-data script is able to spit out a JSON file that describes the roles for this machine and ALSO all the other machines in the ‘staging’ environment.  Our chef recipes are then able to do something like:
 
-<code>
+```ruby
+ 
 @mongo_nodes = node[:environment][:mongo].map(&:private_ip)
-</code>
+ 
+```
 
 This lets us spit out configs dynamically without having a configuration server or a chef-server.
 
