@@ -67,7 +67,9 @@ end
 
 Now, along with the keys we already created in our ClusterFsck bucket above, that part of our ClusterFsck conversion is done!  The rest of the project, and of your own project, should be similarly easy, though you can also store entire arrays or hashes of config data in a single key, to handle options or a changing group of exceptions or special cases.  You can also use ClusterFsck to replace all or parts of YAML files that your application uses for config.  In RubyGems, there is a rubygems.yml file relied on by several parts of the application, though only a few parts were likely to change for us.  Some YAML files may already be processed by ERB, allowing you to interpolate ClusterFsck values into them as the output from ERB interpolation, but if not, it's easy to modify the YAML file loading to pass through ERB, as we did in the RubyGems `config/application.rb`.
 
-We simply replaced this: `$rubygems_config = YAML.load_file("config/rubygems.yml")[Rails.env].symbolize_keys` with this:
+We simply replaced this: <br />
+`$rubygems_config = YAML.load_file("config/rubygems.yml")[Rails.env].symbolize_keys` <br />
+with this:<br />
 `$rubygems_config = YAML.load(ERB.new(IO.read('config/rubygems.yml')).result)[Rails.env].symbolize_keys`
 
 You could create your own YAML ERB loader to do this more cleanly of course, or even monkey-patch Yaml.load_file, but that's up to you.  Similarly, the whole file could be output from ClusterFsck, but those are details you can decide for yourself.  Hopefully you can see how to proceed from here, and know which projects might benefit from a little bit of cluster-unfscking and configuration extraction, and feel free to let us know if you have any ideas or requests for future improvements to ClusterFsck!
