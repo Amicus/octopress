@@ -26,12 +26,19 @@ article {
     text-align: center;
     font-size: 40px !important;
     line-height: 55px !important;
+
+    a {
+      &:hover {
+        text-shadow: none;
+        @include transition-property(color);
+        @include transition-duration(.15s);
+      }
+    }
   }
 
   .author {
-    // text-align: center;
-    font-style: italic;
-
+    text-align: center;
+    font-size: 1.1em;
 
     .authorPic {
       height: 100px;
@@ -42,8 +49,8 @@ article {
 
   .meta {
     // text-align: center;
-    // margin: 0 auto;
-    font-style: italic;
+    margin: 0 auto;
+    font-style: normal;
   }
 
   .entry-content {
@@ -65,6 +72,29 @@ article {
 
     blockquote, figure.code {
       margin-bottom: 30px;
+    }
+
+    img {
+      display: block;
+      margin: 0 auto;
+      @include single-box-shadow(rgba(0,0,0,0.2), 0, 1px, 2px, 1px);
+    }
+  }
+}
+
+.archives {
+  max-width: 800px;
+
+  h1 {
+    font-size: 25px;
+  }
+
+  article {
+    width: 100%;
+    margin-left: 0;
+    h2.title {
+      font-size: 25px;
+      line-height: 25px;
     }
   }
 }

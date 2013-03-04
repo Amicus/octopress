@@ -175,11 +175,11 @@ jQuery.extend( jQuery.easing,
 		.hover(function() {
 				$(containerHoverIDHash, this).stop().animate({
 					'opacity': 1
-				}, 600, 'linear');
+				}, 100, 'linear');
 			}, function() { 
 				$(containerHoverIDHash, this).stop().animate({
 					'opacity': 0
-				}, 700, 'linear');
+				}, 100, 'linear');
 			});
 					
 		$(window).scroll(function() {
