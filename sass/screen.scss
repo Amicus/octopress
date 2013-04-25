@@ -25,7 +25,7 @@ article {
     color: $mainColor;
     text-align: center;
     font-size: 40px !important;
-    line-height: 55px !important;
+    line-height: 1.3em !important;
 
     a {
       &:hover {
@@ -67,7 +67,7 @@ article {
 
     p {
       border-top: none;
-      line-height: 35px;
+      line-height: 30px;
       margin-bottom: 30px;
     }
 
@@ -101,6 +101,9 @@ article {
     .meta {
       display: block;
       text-align: center;
+
+      .author {
+      }
     }
   }
 }

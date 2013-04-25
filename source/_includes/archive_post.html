@@ -10,6 +10,17 @@
 		<article>
 			<h2 class="title"><a href="{{ root_url }}{{ post.url }}">{{post.title}}</a></h2>
 			<div class="meta">
+				{% if post.author %}
+				  {% assign author = post.author %}
+				{% elsif page.author %}
+				  {% assign author = page.author %}
+				{% else %}
+				  {% assign author = site.author %}
+				{% endif %}
+				{% if author %}
+					<div class="byline author vcard">by {{ author }}</div>
+				{% endif %}
+				{% endif %}
 				<span class="date">{{ date | date: "%b %e" }}</span>
 			    {% if site.disqus_short_name and post.comments == true and site.disqus_show_comment_count == true %}
 			    <span class="comments"><a href="{{ root_url }}{{ post.url }}#disqus_thread">Comments</a></span>

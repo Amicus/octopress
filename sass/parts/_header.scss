@@ -178,14 +178,40 @@ background: url('/images/search-dark.png') no-repeat 10px 6px;
   background-image: url("/images/blog_logo.png");
   background-repeat: no-repeat;
   background-position: center 30px;
-  height: 100px;
-  width: auto;
+  background-size: 90% 60%;
+  height: 2em;
+  width: 8em;
 }
 
-// not sure if this works
 @media only screen and (-webkit-min-device-pixel-ratio: 2) {
+  #header {
+    padding: 0;
+  }
+
   #headerbg {
     background: url(../images/blog_logo@2x.png) repeat;
+    background-size: 60% 45%;
+    background-repeat: no-repeat;
+    background-position: 0.3em center;
+    height: 2em;
+  }
+
+  ul#nav {
+    margin-top: -3em;
+
+    li {
+      height: 4em;
+      a {
+        width: 5em !important;
+        padding-top: 0;
+        margin: 0;
+      }
+    }
+  }
+
+  h2 a {
+    font-size: 0.5em;
+    line-height: 0.5em !important;
   }
 }
 
