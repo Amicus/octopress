@@ -9,6 +9,8 @@ categories:
 
 Configuration may not be the sexiest problem to deal with or think about, but it can ruin an otherwise well engineered piece of software when it's done badly, and can complicate or delay software updates, changes, deployments and error replication when it's hard to see and change centrally or hard to replicate and control in different environments.
 
+<!--more-->
+
 ClusterFsck is our solution to virtually all configuration challenges at Amicus, and we wanted to share it with the world and invite other developers to leave configuration nightmares behind them.  All you need is an AWS account and a bucket key, the cluster-fsck ruby gem, and this article to walk you through centralizing your configuration to a few YAML files.
 
 In a future post, I plan to discuss our decision to run a private rubygems.org server for some of our other internal gems and the process of adapting the code base for our use, but for now we'll use that project as a good example of adapting an existing project's configuration to use ClusterFsck.

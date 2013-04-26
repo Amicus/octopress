@@ -10,7 +10,7 @@ categories:
 
 Here at Amicus, we have a fairly novel stack for our provisioning and deployment system. We are currently at a happy spot, so we thought we’d share what we’re doing with the world.
 
-A bit of background (that’ll I’ll cover more and more of in future blog posts).
+A bit of background (that’ll I’ll cover more and more of in future blog posts).<!--more-->
 
 * We are a jruby shop (1.7.x) but mostly develop against MRI (1.9.3)
 * We run Rails and some limited Sinatra
