@@ -77,9 +77,13 @@ article {
     text-align: left;
     margin-top: 30px;
     padding-top: 90px;
-    background-image: url(/images/divider_graphic2.png);
+    background-image: url(/images/divider_graphic5.png);
     background-position: center 5px;
     background-repeat: no-repeat;
+
+    @media screen and (max-width: 600px) {
+      background-size: 80%;
+    }
 
     h2 {
       border-bottom: none;
