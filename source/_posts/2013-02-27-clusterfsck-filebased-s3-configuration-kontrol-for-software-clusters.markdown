@@ -4,7 +4,7 @@ title: "ClusterFsck: Filebased S3 Configuration Kontrol for software clusters"
 author: Brian Glusman
 date: 2013-02-27 09:46
 comments: true
-categories: 
+categories:
 ---
 
 Configuration may not be the sexiest problem to deal with or think about, but it can ruin an otherwise well engineered piece of software when it's done badly, and can complicate or delay software updates, changes, deployments and error replication when it's hard to see and change centrally or hard to replicate and control in different environments.

@@ -13,6 +13,11 @@ h1, h2, h3, h4, h5 {
   font-weight: 300;
 }
 
+// body {
+//   background-image: url(/images/top_bg.png);
+//   background-repeat: repeat-x;
+// }
+
 article {
   margin-bottom: 60px;
   border-bottom: 1px solid $strokeColor;
@@ -37,7 +42,6 @@ article {
   }
 
   .author {
-    text-align: center;
     font-size: 1.1em;
 
     .authorPic {
@@ -48,7 +52,7 @@ article {
   }
 
   .meta {
-    // text-align: center;
+    text-align: center;
     margin: 0 auto;
     font-style: normal;
   }
@@ -56,6 +60,10 @@ article {
   .entry-content {
     text-align: left;
     margin-top: 30px;
+    padding-top: 90px;
+    background-image: url(/images/divider_graphic2.png);
+    background-position: center 5px;
+    background-repeat: no-repeat;
 
     h2 {
       border-bottom: none;

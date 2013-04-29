@@ -29,7 +29,7 @@
               var str1 = val.content;
               var str2 = str1.substr(1, 250);
               str2 = str2.substr(0, Math.min(str2.length, str2.lastIndexOf(" ")));
-            el.append('<div id="content" class="inner"><article class="post"><h2 class="title"><a href="' + val.link + '">' + val.title + '</a></h2><div class="entry-content"><div class="date">Published on: ' + (val.published_on).substr(0,10) + '</div></div><br><p>' + str2 + '...</p><br><a href="' + val.link +'">Read on &rarr;</a></article></div>');
+            el.append('<div id="content" class="inner"><article class="post"><h2 class="title"><a href="' + val.link + '">' + val.title + '</a></h2><div class="entry-content"><div class="date">Published on: ' + (val.published_on).substr(0,10) + '</div></div><br><p>' + str2 + '...</p><br><a href="' + val.link +'">Read on...</a></article></div>');
             if(key >= (data.length-1)){
                 el.append('<div id="content" class="inner"><center><h2 style="border-bottom: 1px solid #ddd;">Result ends</h2></center><br><br></div>');
             }
