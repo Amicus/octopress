@@ -54,7 +54,23 @@ article {
   .meta {
     text-align: center;
     margin: 0 auto;
+    padding: 22px 0;
     font-style: normal;
+    background-image: url(/images/brian8bit.png);
+    background-repeat: no-repeat;
+    background-size: 100px;
+    @include transition-property(background-image);
+    @include transition-duration(.15s);
+
+    &:hover {
+      background-image: url(/images/brian.png);
+      @include transition-property(background-image);
+      @include transition-duration(.15s);
+    }
+
+    &.comments {
+      background-image: none;
+    }
   }
 
   .entry-content {
