@@ -2,7 +2,7 @@
 layout: post
 title: "Test Post 1 - Styling this Blog"
 author: Adrian Del Balso
-picture: "/images/adrian.png"
+picture: "/images/adrian8bit.png"
 date: 2013-02-26 13:03
 comments: true
 categories: 

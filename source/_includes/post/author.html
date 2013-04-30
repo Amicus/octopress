@@ -1,10 +1,18 @@
 {% if post.author %}
   {% assign author = post.author %}
+  {% assign picture = post.picture %}
 {% elsif page.author %}
   {% assign author = page.author %}
+  {% assign picture = page.picture %}
 {% else %}
   {% assign author = site.author %}
 {% endif %}
 {% if author %}
-	<div class="byline author vcard">by <span class="fn">{{ author }}</span></div>
+  <div class="{{ author }}Pic">
+    <img src="{{ picture }}" />
+  </div>
+  <div class="byline author vcard">
+    by 
+    <span class="fn">{{ author }}</span>
+  </div>
 {% endif %}

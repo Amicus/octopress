@@ -32,8 +32,16 @@ article {
     font-size: 40px !important;
     line-height: 1.3em !important;
 
+    @media screen and (max-width: 600px) {
+      font-size: 1.5em !important;
+    }
+
     a {
+      color: #258fb8 !important;
+      @include transition-property(color);
+      @include transition-duration(.15s);
       &:hover {
+        color: tint(#258fb8, 30%) !important;
         text-shadow: none;
         @include transition-property(color);
         @include transition-duration(.15s);
@@ -56,21 +64,6 @@ article {
     margin: 0 auto;
     padding: 22px 0;
     font-style: normal;
-    background-image: url(/images/brian8bit.png);
-    background-repeat: no-repeat;
-    background-size: 100px;
-    @include transition-property(background-image);
-    @include transition-duration(.15s);
-
-    &:hover {
-      background-image: url(/images/brian.png);
-      @include transition-property(background-image);
-      @include transition-duration(.15s);
-    }
-
-    &.comments {
-      background-image: none;
-    }
   }
 
   .entry-content {
@@ -83,6 +76,7 @@ article {
 
     @media screen and (max-width: 600px) {
       background-size: 80%;
+      padding-top: 60px;
     }
 
     h2 {
@@ -136,6 +130,54 @@ article {
   }
 }
 
+.BowersPic {
+  &:hover {
+    background-image: url('/images/topper.png');
+    background-position: center 0;
+    background-repeat: no-repeat;
+    img {
+      opacity: 0;
+    }
+  }
+}
+
+.GlusmanPic {
+  &:hover {
+    background-image: url('/images/brian.png');
+    background-position: center 0;
+    background-repeat: no-repeat;
+    img {
+      opacity: 0;
+    }
+  }
+}
+
+.BalsoPic {
+  @include transition-property(all);
+  @include transition-duration(.15s);
+  background-position: center 0;
+  background-repeat: no-repeat;
+
+  img {
+    // @include transition-property(opacity);
+    // @include transition-duration(.15s);
+    // opacity: 1;
+  }
+
+  &:hover {
+    @include transition-property(all);
+    @include transition-duration(.15s);
+    background-image: url('/images/adrian.png');
+    background-position: center 0;
+    background-repeat: no-repeat;
+
+    img {
+      // @include transition-property(opacity);
+      // @include transition-duration(.15s);
+      opacity: 0;
+    }
+  }
+}
 .post .meta .date::before, .post .meta .tags::before, .post .meta .comments::before {
   content: none;
 }

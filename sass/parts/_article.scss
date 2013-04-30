@@ -20,7 +20,7 @@ article{
 	}
 
 .title a{
-    color:#7c7873;
+    color: #258fb8;
     -webkit-transition:all 1s ease-in-out;
     -moz-transition:all 1s ease-in-out;
     -o-transition:all 1s ease-in-out;
@@ -37,8 +37,13 @@ article{
 		line-height: 2;
 		text-align: justify;
 		a{
+			@include transition-property(color);
+      @include transition-duration(.15s);
 			&:hover{
-				text-decoration: underline;
+				text-decoration: none;
+				color: tint(#258fb8, 30%);
+				@include transition-property(color);
+        @include transition-duration(.15s);
 			}
 		}
 		.more-link{

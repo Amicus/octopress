@@ -2,15 +2,20 @@
 layout: post
 title: "How We Provision and Deploy (Part 1) - Provisioning"
 author: Topper Bowers
-picture: /images/topper.png
+picture: /images/topper8bit.png
 date: 2013-02-26 13:20
 comments: true
-categories: 
+categories:
 ---
 
-Here at Amicus, we have a fairly novel stack for our provisioning and deployment system. We are currently at a happy spot, so we thought we’d share what we’re doing with the world.
+UPDATE:
+It looks like we picked a system actually very close to how AWS OpsWorks does things.  They use chef-solo and json files distributed to boxes that describe their environment.  Right now they only support EBS backed instances using their own AMIs - so we’re not switching just yet.  However, it’s definitely something we’re tracking.
 
-A bit of background (that’ll I’ll cover more and more of in future blog posts).<!--more-->
+Here at Amicus, we have a fairly novel stack for our provisioning and deployment system. We are currently at a happy spot, so we thought we’d share what we’re doing.
+
+<!--more-->
+
+A bit of background:
 
 * We are a jruby shop (1.7.x) but mostly develop against MRI (1.9.3)
 * We run Rails and some limited Sinatra
@@ -18,6 +23,8 @@ A bit of background (that’ll I’ll cover more and more of in future blog post
 * We use Mongo as our primary data store with some Redis and Zookeeper in the mix (the latter two are new)
 * Our philosophy is “always be horizontally scalable” and “no single points of failure.”
 * We haven’t gone down during the recent AWS outages (even though we are in the east region)
+
+In future blog posts I’ll talk more about app deployment, our ruby choices, why we’ll probably be dropping Redis and Zookeeper, and describe how and why we stayed up while AWS went FUBAR.
 
 <h2>Chef</h2>
 
@@ -35,7 +42,7 @@ bin/create_server -e staging -g staging -r webapps -n webapps00
  
 ```
 
-That will use Fog to go out to AWS and create a server in the staging security group (<code>-g</code>) and staging environment (<code>-e</code>, i’ll get to this in a sec).  Adds a Name tag (<code>-n</code>) of <code>webapps00</code> and a “roles” (<code>-r</code>) tag of “webapps.”
+That will use Fog to go out to AWS and create a server in the staging security group <code>-g</code> and staging environment (<code>-e</code>, I’ll get to this in a sec).  Adds a Name tag (<code>-n</code>) of “webapps00” and a “roles” <code>-r</code> tag of “webapps.”
 
 We use a bare Ubuntu 12.04 AMI for this (always starting from scratch) and our user-data script installs ruby, chef-solo and clones our deployer code (the same project from which I ran create_server on my local box).
 
@@ -53,7 +60,7 @@ The user-data script is able to spit out a JSON file that describes the roles fo
 
 This lets us spit out configs dynamically without having a configuration server or a chef-server.
 
-We have made a conscience decision to only use instance store (even for Mongo) and that decision has served us well through the AWS outages as those have mostly been EBS related.  
+We have made a conscious decision to only use instance store (even for Mongo) and that decision has served us well through the AWS outages as those have mostly been EBS related.  
 
 One thing we learned from the Obama For America organization is that it might be interesting to use a mix of instance-store and EBS-backed instances.  Instance-store for redundancy and EBS-backed for spin-up speed.  Currently from typing create server on the command line to a running server is about 4-8 minutes for us (depending on roles).  That’s probably too long for auto-scaling.  However, it’s only on the border of too-long and adding an EBS snapshot starting point should be able to keep this exact system but get the time down drastically.
 

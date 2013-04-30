@@ -2,6 +2,7 @@
 layout: post
 title: "ClusterFsck: Filebased S3 Configuration Kontrol for software clusters"
 author: Brian Glusman
+picture: "/images/brian8bit.png"
 date: 2013-02-27 09:46
 comments: true
 categories:
