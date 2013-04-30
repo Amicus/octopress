@@ -29,7 +29,6 @@ article {
   .title {
     color: $mainColor;
     text-align: center;
-    font-size: 40px !important;
     line-height: 1.3em !important;
 
     @media screen and (max-width: 600px) {
@@ -46,6 +45,13 @@ article {
         @include transition-property(color);
         @include transition-duration(.15s);
       }
+    }
+  }
+
+  @media only screen and (max-device-width: 480px) {
+    .line-numbers {
+      font-size: 1em;
+      line-height: 1.975;
     }
   }
 
