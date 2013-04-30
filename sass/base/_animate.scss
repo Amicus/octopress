@@ -1733,19 +1733,19 @@ body { /* Addresses a small issue in webkit: http://bit.ly/NEdoDq */
 }
 @-webkit-keyframes bounceInDown {
 	0% {
-		opacity: 0;
+		opacity: 1;
 		-webkit-transform: translateY(-2000px);
 	}
-	
+
 	60% {
-		opacity: 1;
+    opacity: 1;
 		-webkit-transform: translateY(30px);
 	}
-	
+
 	80% {
 		-webkit-transform: translateY(-10px);
 	}
-	
+
 	100% {
 		-webkit-transform: translateY(0);
 	}

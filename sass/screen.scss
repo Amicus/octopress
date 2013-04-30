@@ -64,6 +64,10 @@ article {
     margin: 0 auto;
     padding: 22px 0;
     font-style: normal;
+
+    .date {
+      margin-right: 0 !important;
+    }
   }
 
   .entry-content {
@@ -123,6 +127,8 @@ article {
     .meta {
       display: block;
       text-align: center;
+      margin-top: 0;
+      padding-top: 0;
 
       .author {
       }
@@ -153,27 +159,12 @@ article {
 }
 
 .BalsoPic {
-  @include transition-property(all);
-  @include transition-duration(.15s);
-  background-position: center 0;
-  background-repeat: no-repeat;
-
-  img {
-    // @include transition-property(opacity);
-    // @include transition-duration(.15s);
-    // opacity: 1;
-  }
-
   &:hover {
-    @include transition-property(all);
-    @include transition-duration(.15s);
     background-image: url('/images/adrian.png');
     background-position: center 0;
     background-repeat: no-repeat;
 
     img {
-      // @include transition-property(opacity);
-      // @include transition-duration(.15s);
       opacity: 0;
     }
   }

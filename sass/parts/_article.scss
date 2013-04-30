@@ -19,20 +19,6 @@ article{
 		}
 	}
 
-.title a{
-    color: #258fb8;
-    -webkit-transition:all 1s ease-in-out;
-    -moz-transition:all 1s ease-in-out;
-    -o-transition:all 1s ease-in-out;
-    transition:all 1s ease-in-out;
-}
-
-.title a:hover{
-    color: #084B8A;
-    text-shadow: 3px 3px 12px #888;
-    -webkit-transform: scale(1.3);
-    -moz-transform: scale(1.3);
-}
 	.entry-content{
 		line-height: 2;
 		text-align: justify;
