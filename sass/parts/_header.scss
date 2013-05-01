@@ -182,6 +182,10 @@ background: url('/images/search-dark.png') no-repeat 10px 6px;
     height: 100%;
     width: 100%;
   }
+
+  @media screen and (max-width: 420px) {
+    content: url("../images/blog_logo_mobile.png");
+  }
 }
 
 @media only screen and (-webkit-min-device-pixel-ratio: 2) {
