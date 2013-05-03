@@ -12,6 +12,12 @@
 body.amc {
   background: white;
   background-image: none;
+
+  @media screen and (max-width: 1040px) {
+    margin: 0 auto;
+    max-width: 800px;
+    padding: 1em;
+  }
 }
 
 .amc {
