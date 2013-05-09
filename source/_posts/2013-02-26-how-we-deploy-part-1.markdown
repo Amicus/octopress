@@ -8,12 +8,12 @@ comments: true
 categories:
 ---
 
-UPDATE:
-It looks like we picked a system actually very close to how AWS OpsWorks does things.  They use chef-solo and json files distributed to boxes that describe their environment.  Right now they only support EBS backed instances using their own AMIs - so we’re not switching just yet.  However, it’s definitely something we’re tracking.
-
 Here at Amicus, we have a fairly novel stack for our provisioning and deployment system. We are currently at a happy spot, so we thought we’d share what we’re doing.
 
 <!--more-->
+
+UPDATE:
+It looks like we picked a system actually very close to how AWS OpsWorks does things.  They use chef-solo and json files distributed to boxes that describe their environment.  Right now they only support EBS backed instances using their own AMIs - so we’re not switching just yet.  However, it’s definitely something we’re tracking.
 
 A bit of background:
 
@@ -37,9 +37,9 @@ We, instead, use the AWS API to assign tags to the instances we spin up.  A scri
 Let’s spin up a server (on my local box).
 
 ```ruby
- 
+
 bin/create_server -e staging -g staging -r webapps -n webapps00
- 
+
 ```
 
 That will use Fog to go out to AWS and create a server in the staging security group <code>-g</code> and staging environment (<code>-e</code>, I’ll get to this in a sec).  Adds a Name tag (<code>-n</code>) of “webapps00” and a “roles” <code>-r</code> tag of “webapps.”
@@ -53,14 +53,14 @@ You can think of the environment tag as simulated multicast... when a webapps bo
 The user-data script is able to spit out a JSON file that describes the roles for this machine and ALSO all the other machines in the ‘staging’ environment.  Our chef recipes are then able to do something like:
 
 ```ruby
- 
+
 @mongo_nodes = node[:environment][:mongo].map(&:private_ip)
- 
+
 ```
 
 This lets us spit out configs dynamically without having a configuration server or a chef-server.
 
-We have made a conscious decision to only use instance store (even for Mongo) and that decision has served us well through the AWS outages as those have mostly been EBS related.  
+We have made a conscious decision to only use instance store (even for Mongo) and that decision has served us well through the AWS outages as those have mostly been EBS related.
 
 One thing we learned from the Obama For America organization is that it might be interesting to use a mix of instance-store and EBS-backed instances.  Instance-store for redundancy and EBS-backed for spin-up speed.  Currently from typing create server on the command line to a running server is about 4-8 minutes for us (depending on roles).  That’s probably too long for auto-scaling.  However, it’s only on the border of too-long and adding an EBS snapshot starting point should be able to keep this exact system but get the time down drastically.
 

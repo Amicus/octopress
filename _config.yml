@@ -4,7 +4,7 @@
 
 url: http://Amicus.github.com
 title: Amicus Tech Blog
-subtitle: 
+subtitle:
 author: Amicus Tech Blog
 simple_search: http://google.com/search
 description:
@@ -83,6 +83,9 @@ googleplus_hidden: false
 # Pinboard
 pinboard_user:
 pinboard_count: 3
+
+# Tapir
+tapir_token: 518ba9733f61b05b200002f3
 
 # Delicious
 delicious_user:
