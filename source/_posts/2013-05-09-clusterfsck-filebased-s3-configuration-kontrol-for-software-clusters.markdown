@@ -26,13 +26,13 @@ Let’s say you want to store an API key for Amicus in your project and it needs
 
 ### Step 1 - Create the configs
 ```bash
-clusterfsck create development amicus-api
+clusterfsck new development amicus-api
 ```
 
 By default cluster-fsck will look at environment variables, `./.clusterfsck`,  `/usr/clusterfsck`, `~/.clusterfsck` (see [readme.md](https://github.com/Amicus/clusterfsck/blob/master/README.md)).  It looks for S3 credentials in its own config file, or in a `~/.fog file`.  Let’s assume it finds your `~/.fog` keys.
 
 ```bash
-$ > clusterfsck create amicus-api
+$ > clusterfsck new amicus-api
 ```
 
 ClusterFsck stores your configuration(s) in an S3 bucket, which must have a unique (global) name.
@@ -65,7 +65,7 @@ secret: def446
 ```
 You can go ahead and create separate keys for your staging and production environments.
 ```bash
-clusterfsck create staging amicus-api
+clusterfsck new staging amicus-api
 ```
 
 ### Step 2 - Use the config
