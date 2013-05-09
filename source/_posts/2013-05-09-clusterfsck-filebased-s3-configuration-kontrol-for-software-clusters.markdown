@@ -21,20 +21,15 @@ Let’s say you want to store an API key for Amicus in your project and it needs
 clusterfsck create development amicus-api
 ```
 
-By default cluster-fsck will look at environment variables, `./.clusterfsck`,  `/usr/clusterfsck`, `~/.clusterfsck` (see [readme.md](https://github.com/Amicus/clusterfsck/blob/master/README.md)), in that order, and if none of those exist (or if necessary values are missing from whichever it finds first) it will walk you through your first-time setup.  It looks for S3 credentials in it’s own config file, or in a `~/.fog file`.  Let’s assume it finds your `~/.fog` keys.
+By default cluster-fsck will look at environment variables, `./.clusterfsck`,  `/usr/clusterfsck`, `~/.clusterfsck` (see [readme.md](https://github.com/Amicus/clusterfsck/blob/master/README.md)).  It looks for S3 credentials in its own config file, or in a `~/.fog file`.  Let’s assume it finds your `~/.fog` keys.
 
 ```bash
 $ > clusterfsck create amicus-api
 ```
-If this is your first time using ClusterFsck and you haven't run `clusterfsck init` or manually set up your configuration, the `create` command will call init before running, so it has configuration data to create the project with.
 
 ClusterFsck stores your configuration(s) in an S3 bucket, which must have a unique (global) name.
 The name will be stored in `~/.clusterfsck` on this machine, and should be placed in
 `/usr/clusterfsck` on your production box (with a different CLUSTER_FSCK_ENV setting if desired).
-It may also be overridden on a per project basis by creating a `./.clusterfsck`
-file in the project root. The bucket and ENV setting are first checked from *nix environment
-variables, so these can override file settings as well.  Bucket is read from CLUSTER_FSCK_BUCKET
-and the environment (production, staging, development, etc) is read from CLUSTER_FSCK_ENV.
 
 ```bash
 Enter a name for your bucket, or press enter to accept the randomly generated name:
@@ -67,7 +62,7 @@ clusterfsck create staging amicus-api
 
 ### Step 2 - Use the config
 
-In your app you first setup the CLUSTER_FSCK_ENV by either using an environment variable or using files (see readme) or setting it directly on ClusterFsck.  CLUSTER_FSCK_ENV defaults to ‘development’
+See the [readme.md](https://github.com/Amicus/clusterfsck/blob/master/README.md) for setting up the config and CLUSTER_FSCK_ENV.  CLUSTER_FSCK_ENV defaults to ‘development’
 ```ruby
 ClusterFsck.environment = “staging”
 ```
@@ -81,5 +76,5 @@ reader.key == ‘abc123’
 reader[:key] == ‘abc123’
 ```
 
-That’s it! Hopefully you can see how to proceed from here, and know which projects might benefit from a little bit of cluster-unfscking and configuration extraction, and feel free to let us know if you have any ideas or requests for future improvements to ClusterFsck!
+That’s it! Hopefully you can see how to proceed from here, and know which projects might benefit from a little bit of cluster-unfscking and configuration extraction. Feel free to let us know if you have any ideas or requests for future improvements to ClusterFsck!
 
