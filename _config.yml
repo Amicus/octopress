@@ -2,11 +2,10 @@
 #      Main Configs       #
 # ----------------------- #
 
-url: http://Amicus.github.com
+url: http://briefs.amicushq.com
 title: Amicus Tech Blog
 subtitle:
 author: Amicus Tech Blog
-simple_search: http://google.com/search
 description:
 
 # Default date format is "ordinal" (resulting in "July 22nd 2007")
