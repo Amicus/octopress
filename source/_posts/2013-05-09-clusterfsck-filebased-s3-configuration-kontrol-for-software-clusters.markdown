@@ -14,6 +14,14 @@ ClusterFsck is our solution to configuration challenges at Amicus, and we want t
 
 <!--more-->
 
+Centralizing your configuration can help a number of ways, from giving you access control levels for free, making replicating production problems locally easier, and changing configuration at runtime without having to redeploy, or even without restarting the server.  There are still some security issues to be conscious of when using ClusterFsck, and Jonathan Simms (@slyphon) pointed out some we hadn't thought of when taking a look at ClusterFsck for us:
+
+* Don't ever ever ever put sensitive credentials in environment variables if there's another option.  On Heroku, this may still be your best option, but on other platforms there are better choices, because `ps` can show the environment of a running process.
+
+* Be careful about the permissions on all configuration files with sensitive data, including ClusterFsck's config files. We plan to add automatic checks for this to ClusterFsck and show a warning if they're group/world writable or readable, though a pull request doing this for us would be welcome ;-)
+
+But assuming you're sold on the benefits and know the issues to watch out for, you can jump straight to [ClusterFsck's github page](https://github.com/amicus/clusterfsck) or follow along here as we set up a simple usage of it.
+
 Let’s say you want to store an API key for Amicus in your project and it needs to be different in development/staging/production.
 
 ### Step 1 - Create the configs
