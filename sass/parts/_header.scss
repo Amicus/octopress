@@ -20,19 +20,38 @@
     }
 }
 
+.amicusLink {
+  text-align: center;
+  color: #999;
+  font-size: 0.8em;
+  background-color: #eee;
+  width: 210px;
+  padding: 0.2em;
+  @include border-radius(3px);
+  margin: 0 auto;
+
+  a {
+    color: #258fb8 !important;
+
+    &:hover {
+      color: #66b0cd !important;
+    }
+  }
+}
+
 #headerbg {
     text-align: center;
     color: $mainColor;
     margin: 0 auto;
     border-radius: 5px;
     font-weight: 300;
-    
+
     -webkit-backface-visibility: hidden;
     -moz-backface-visibility: hidden;
     -ms-backface-visibility: hidden;
     -o-backface-visibility: hidden;
     backface-visibility: hidden;
-    
+
     -webkit-animation-duration: 1s;
     -webkit-animation-delay: .2s;
     -webkit-animation-timing-function: ease;
