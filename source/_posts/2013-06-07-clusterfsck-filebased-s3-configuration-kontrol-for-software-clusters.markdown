@@ -17,10 +17,11 @@ Configuration may not be the sexiest problem to deal with, but it can ruin an ot
 ClusterFsck provides a clean and easy way to store configurations on S3. With ClusterFsck, you edit config files locally and easily read them in your app code.  ClusterFsck is environment aware, allowing you to centrally maintain (for instance) staging, production, dev configs.
 
 Centralizing your configuration helps in a number of ways:
-  * ACL for free (because it's on S3)
-  * Keep your configs out of your app repos (sekuritah!)
-  * Change configs without a redeploy
-  * Keep development configs consistent across the team
+
+* ACL for free (because it's on S3)
+* Keep your configs out of your app repos (sekuritah!)
+* Change configs without a redeploy
+* Keep development configs consistent across the team
 
 Jump straight to [ClusterFsck's github page](https://github.com/amicus/clusterfsck) or keep reading as we set up a simple usage.
 
